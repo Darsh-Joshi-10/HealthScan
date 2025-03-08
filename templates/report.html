@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pneumonia Detection - Results</title>
+  <link rel="stylesheet" href="assets/css/result.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Diagnosis Results</h1>
+      <p>Your detailed diagnosis based on symptoms and uploaded medical images</p>
+    </div>
+
+    <!-- Results Card -->
+    <div class="result-card">
+      <h3>Diagnosis</h3>
+      <div class="result-item">
+        <p><strong>Condition Identified:</strong> Pneumonia</p>
+        <p><strong>Confidence Level:</strong> 95%</p>
+      </div>
+
+      <h3>Severity</h3>
+      <div class="severity-level">
+        <div class="severity-item">
+          <p><strong>Severity:</strong> Moderate</p>
+          <div class="severity-bar">
+            <div class="severity-progress moderate"></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Suggested Next Steps</h3>
+      <div class="next-steps">
+        <ul>
+          <li>Administer oxygen therapy if needed</li>
+          <li>Start antibiotics as per protocol</li>
+          <li>Monitor vital signs regularly</li>
+          <li>Follow up with imaging in 48 hours</li>
+        </ul>
+      </div>
+
+      <button id="downloadReport" class="download-btn">Download Report</button>
+    </div>
+  </div>
+
+  <script src="results.js"></script>
+</body>
+</html>

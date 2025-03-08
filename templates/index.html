@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HealthScan - Pneumonia Detection</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/index.css') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/logo.png') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header Section -->
+      <header class="header">
+        <img
+          src="{{ url_for('static', filename='images/logo.png') }}"
+          alt="HealthScan Logo"
+          id="logo"
+        />
+        <h1>HEALTHSCAN</h1>
+      </header>
+
+      <!-- Form Section -->
+      <section class="form-card">
+        <p>Upload symptoms and medical images for precise diagnosis.</p>
+        <h3>Patient Information</h3>
+        <form id="patientForm" method="POST" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="patientName">Name:</label>
+            <input
+              type="text"
+              name="patient_name"
+              id="patientName"
+              placeholder="Enter patient's name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="patientDOB">Date of Birth:</label>
+            <input type="date" name="patient_dob" id="patientDOB" required />
+          </div>
+          <div class="form-group">
+            <label for="patientGender">Gender:</label>
+            <select name="patient_gender" id="patientGender" required>
+              <option value="">Select gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="symptoms">Symptoms:</label>
+            <textarea
+              name="symptoms"
+              id="symptoms"
+              rows="5"
+              placeholder="Enter symptoms such as fever, cough, chest pain..."
+              required
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="imageUpload" class="upload-btn">
+              <span>Upload X-ray / CT Scan</span>
+            </label>
+            <input
+              type="file"
+              name="xray_image"
+              id="imageUpload"
+              accept="image/*"
+              required
+              onchange="previewImage(event)"
+            />
+            <div id="imagePreviewContainer" style="display: none">
+              <h4>Image Preview:</h4>
+              <img id="imagePreview" src="" alt="Uploaded Image Preview" />
+            </div>
+          </div>
+          <br />
+          <button type="submit" class="submit-btn">Analyze</button>
+        </form>
+      </section>
+
+      <!-- Results Section (Dynamic) -->
+      <section id="results" class="results-section" style="display:none;">
+        <h3>Diagnosis Report</h3>
+        <table class="results-table">
+          <tr>
+            <th>Name : </th>
+            <td id="resultName"></td>
+          </tr>
+          <tr>
+            <th>Age : </th>
+            <td id="resultAge"></td>
+          </tr>
+          <tr>
+            <th>Gender : </th>
+            <td id="resultGender"></td>
+          </tr>
+          <tr>
+            <th>Symptoms : </th>
+            <td id="resultSymptoms"></td>
+          </tr>
+          <tr>
+            <th>Diagnosis : </th>
+            <td><strong id="resultDiagnosis"></strong></td>
+          </tr>
+        </table>
+      </section>
+
+      <!-- Professional Report Section -->
+      <section id="reportSection" class="report-section" style="display:none;">
+        <h3>Professional Pneumonia Report</h3>
+        <button id="generateReportBtn" class="submit-btn">Generate Report</button>
+        <div id="reportContent" style="margin-top: 20px;"></div>
+      </section>
+
+      <!-- Footer Section -->
+      <footer class="footer">
+        <p>
+          <small
+            ><a href="/tnc">Terms and Conditions</a> |
+            <a href="/privacy">Privacy Policy</a></small
+          >
+        </p>
+        <p>&copy; 2025 HealthScan. All rights reserved.</p>
+      </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/renderer.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      function previewImage(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+    
+        const reader = new FileReader();
+        reader.onload = function () {
+          const imagePreview = document.getElementById("imagePreview");
+          const imagePreviewContainer = document.getElementById("imagePreviewContainer");
+          imagePreview.src = reader.result;
+          imagePreviewContainer.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      }
+
+      // Prevent form resubmission on page reload
+      if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+      }
+
+      // AJAX form submission for patient analysis
+      $('#patientForm').on('submit', function(e) {
+        e.preventDefault();  // Prevent default form submission
+        
+        var formData = new FormData(this);
+        
+        $.ajax({
+          url: '/analyze',
+          type: 'POST',
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function(response) {
+            if (response.diagnosis) {
+              // Update result section with response data
+              $('#resultName').text(response.name);
+              $('#resultAge').text(response.age);
+              $('#resultGender').text(response.gender);
+              $('#resultSymptoms').text(response.symptoms);
+              $('#resultDiagnosis').text(response.diagnosis);
+              
+              // Show the results section and report section button
+              $('#results').show();
+              $('#reportSection').show();
+            } else {
+              alert('Error: No diagnosis received.');
+            }
+          },
+          error: function() {
+            alert('An error occurred while processing your request.');
+          }
+        });
+      });
+
+      // AJAX call to generate professional report
+      $('#generateReportBtn').on('click', function(e) {
+        e.preventDefault();
+        $.ajax({
+          url: '/generate_report',
+          type: 'POST',
+          success: function(response) {
+            if (response.report) {
+              // Replace newlines with <br> tags for better readability
+              const formattedReport = response.report.replace(/\n/g, '<br>');
+              $('#reportContent').html(formattedReport);
+            } else {
+              alert('Error: No report generated.');
+            }
+          },
+          error: function() {
+            alert('An error occurred while generating the report.');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

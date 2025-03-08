@@ -1,0 +1,47 @@
+# Patient Data & Medical Images (Privacy)
+uploads/*
+!uploads/.gitkeep
+healthscan.db
+OutputOllama.txt
+
+# Machine Learning Models (Large Files)
+models/*
+!models/.gitkeep
+
+
+# Python Environment
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+venv/
+ENV/
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+*.egg-info/
+
+# IDE & Editor Files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs & Local Data
+logs/
+*.log
+instance/
+.webassets-cache
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
