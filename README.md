@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # HealthScan - Pneumonia Detection System
 
 A Flask-based web application that uses machine learning to detect pneumonia from chest X-rays and generate medical reports.
