@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # HealthScan - Pneumonia Detection System
 
 A Flask-based web application that uses machine learning to detect pneumonia from chest X-rays and generate medical reports.
@@ -70,3 +71,6 @@ A Flask-based web application that uses machine learning to detect pneumonia fro
 - `models/pneumonia_detection_model.h5`: ML model
 - `healthscan.db`: Patient database
 - Environment files and credentials
+=======
+# HealthScan
+>>>>>>> origin/main
