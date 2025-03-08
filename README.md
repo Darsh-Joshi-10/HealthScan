@@ -25,7 +25,7 @@ A Flask-based web application that uses machine learning to detect pneumonia fro
 ## Project Structure
 
 ```
-/D:/Major Proj/
+Project Folder
 ├── app.py              # Main application file
 ├── database.py         # Database models
 ├── models/            
